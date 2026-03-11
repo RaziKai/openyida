@@ -1,0 +1,6 @@
+[
+  { "type": "TextField", "label": "姓名", "required": true },
+  { "type": "TextField", "label": "联系电话", "required": true },
+  { "type": "TextField", "label": "公司名称", "required": false },
+  { "type": "TextareaField", "label": "留言内容", "required": false }
+]
