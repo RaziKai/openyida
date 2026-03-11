@@ -9,6 +9,10 @@ metadata:
   audience: developers
   workflow: yida-development
   version: 1.0.0
+  tags:
+    - yida
+    - low-code
+    - app
 ---
 
 # 宜搭应用创建技能

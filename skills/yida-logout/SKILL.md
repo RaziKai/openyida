@@ -9,6 +9,11 @@ metadata:
   audience: developers
   workflow: yida-auth
   version: 1.0.0
+  tags:
+    - yida
+    - auth
+    - logout
+    - cookie
 ---
 
 # 宜搭退出登录技能

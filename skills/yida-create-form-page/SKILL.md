@@ -9,6 +9,11 @@ metadata:
   audience: developers
   workflow: yida-development
   version: 1.0.0
+  tags:
+    - yida
+    - low-code
+    - form
+    - schema
 ---
 
 # 宜搭表单页面创建与更新技能

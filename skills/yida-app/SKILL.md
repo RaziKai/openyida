@@ -9,6 +9,10 @@ metadata:
   audience: developers
   workflow: yida-full-workflow
   version: 1.0.0
+  tags:
+    - yida
+    - low-code
+    - workflow
 ---
 
 # 宜搭完整应用开发技能

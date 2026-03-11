@@ -9,6 +9,11 @@ metadata:
   audience: developers
   workflow: yida-deployment
   version: 1.0.0
+  tags:
+    - yida
+    - low-code
+    - deploy
+    - babel
 ---
 
 # 宜搭页面发布技能

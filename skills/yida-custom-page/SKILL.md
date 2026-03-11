@@ -9,6 +9,11 @@ metadata:
   audience: developers
   workflow: yida-development
   version: 1.0.0
+  tags:
+    - yida
+    - low-code
+    - react
+    - custom-page
 ---
 
 # 宜搭自定义页面开发技能
@@ -34,11 +39,15 @@ metadata:
 
 ## 使用示例
 
+> **注意**：编译和发布功能由 `yida-publish-page` 技能提供，此处仅作流程说明。
+
 ### 示例 1：编译源码
 **场景**：将 JSX 源码编译为宜搭可用的格式
+**依赖**：需先安装 yida-publish-page 依赖
 **命令**：
 ```bash
-node .claude/skills/yida-publish-page/scripts/babel-transform/transform.js pages/src/my-page.js
+cd .claude/skills/yida-publish-page/scripts && npm install
+node babel-transform/transform.js pages/src/my-page.js
 ```
 
 ### 示例 2：发布页面
