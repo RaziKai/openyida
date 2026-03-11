@@ -6,14 +6,14 @@
 set -e
 
 # 配置
-SKILLS_REPO="http://gitlab.alibaba-inc.com/alex.mm/yida-skills.git"
-SKILLS_REPO_SSH="git@gitlab.alibaba-inc.com:alex.mm/yida-skills.git"
-SKILLS_BRANCH="feat/init"
+SKILLS_REPO="https://github.com/openyida/yida-skills.git"
+SKILLS_REPO_SSH="git@github.com:openyida/yida-skills.git"
+SKILLS_BRANCH="master"
 CLAUDE_DIR=".claude"
 CACHE_DIR=".cache"
 
 # 检测是否可以使用 SSH
-if ssh -T -o BatchMode=yes git@gitlab.alibaba-inc.com 2>/dev/null; then
+if ssh -T -o BatchMode=yes git@github.com 2>/dev/null; then
     SKILLS_REPO="$SKILLS_REPO_SSH"
     echo "🔑 检测到 SSH 认证可用，使用 SSH 方式克隆"
 else
