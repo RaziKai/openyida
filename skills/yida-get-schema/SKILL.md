@@ -43,7 +43,7 @@ node .claude/skills/yida-get-schema/scripts/get-schema.js APP_XXX FORM-XXX
 ## 使用方式
 
 ```bash
-node .claude/skills/get-schema/scripts/get-schema.js <appType> <formUuid>
+node .claude/skills/yida-get-schema/scripts/get-schema.js <appType> <formUuid>
 ```
 
 **参数说明**：

@@ -86,7 +86,7 @@ node publish.js APP_XXX FORM-XXXXXX pages/src/xxx.js
 - playwright（Python 版，yida-login 依赖）
 
 ```bash
-cd .claude/skills/yida-publish/scripts && npm install
+cd .claude/skills/yida-publish-page/scripts && npm install
 ```
 
 ## 文件结构

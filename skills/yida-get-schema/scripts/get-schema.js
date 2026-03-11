@@ -14,7 +14,7 @@
  *   若接口返回 302（登录失效），脚本会自动调用 login.py 重新登录后重试。
  *
  * 示例：
- *   node .claude/skills/get-schema/scripts/get-schema.js "APP_XXX" "FORM-XXX"
+ *   node .claude/skills/yida-get-schema/scripts/get-schema.js "APP_XXX" "FORM-XXX"
  *
  * 输出：
  *   - 日志输出到 stderr
@@ -68,7 +68,7 @@ function parseArgs() {
   const args = process.argv.slice(2);
   if (args.length < 2) {
     console.error("用法: node get-schema.js <appType> <formUuid>");
-    console.error('示例：node .claude/skills/get-schema/scripts/get-schema.js "APP_XXX" "FORM-XXX"');
+    console.error('示例：node .claude/skills/yida-get-schema/scripts/get-schema.js "APP_XXX" "FORM-XXX"');
     process.exit(1);
   }
   return {

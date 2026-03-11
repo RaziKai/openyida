@@ -87,7 +87,7 @@ node scripts/babel-transform/transform.js <源文件路径>
 ### 部署到宜搭
 
 ```bash
-cd .claude/skills/yida-publish/scripts
+cd .claude/skills/yida-publish-page/scripts
 npm install  # 首次需要安装依赖
 node publish.js <appType> <formUuid> <源文件路径>
 ```
