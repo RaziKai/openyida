@@ -1,6 +1,19 @@
 ---
 name: yida-create-form-page
 description: 宜搭表单页面创建与更新技能，支持创建新表单（saveFormSchemaInfo + saveFormSchema + updateFormConfig）和更新已有表单（getFormSchema + saveFormSchema + updateFormConfig），支持 19 种字段类型（含 SerialNumberField 流水号）和字段增删改操作。
+license: MIT
+compatibility:
+  - opencode
+  - claude-code
+metadata:
+  audience: developers
+  workflow: yida-development
+  version: 1.0.0
+  tags:
+    - yida
+    - low-code
+    - form
+    - schema
 ---
 
 # 宜搭表单页面创建与更新技能
@@ -11,6 +24,34 @@ description: 宜搭表单页面创建与更新技能，支持创建新表单（s
 
 - **create 模式**：创建新表单页面，定义字段列表、字段类型、选项等。先创建空白表单获取 formUuid，再保存表单 Schema。
 - **update 模式**：更新已有表单页面，支持对字段进行增删改、调整属性等操作。先获取现有 Schema，应用修改后保存。
+
+## 何时使用
+
+当以下场景发生时使用此技能：
+- 用户需要在应用中创建数据收集表单（如报名表、调查表）
+- 用户需要创建带有字段的表单页面来存储数据
+- 用户需要更新已有表单的字段（增删改）
+- 已通过 yida-create-app 创建应用后，需要创建表单来收集数据
+
+## 使用示例
+
+### 示例 1：创建新表单
+**场景**：在应用中创建一个简单的用户信息表单
+**命令**：
+```bash
+node .claude/skills/yida-create-form-page/scripts/create-form-page.js create "APP_XXX" "用户信息表" '[{"type":"TextField","label":"姓名","required":true},{"type":"SelectField","label":"部门","options":["技术部","产品部"]}]'
+```
+**输出**：
+```json
+{"success":true,"formUuid":"FORM-XXX","formTitle":"用户信息表","appType":"APP_XXX","fieldCount":2}
+```
+
+### 示例 2：更新已有表单
+**场景**：为已存在的表单添加新字段
+**命令**：
+```bash
+node .claude/skills/yida-create-form-page/scripts/create-form-page.js update "APP_XXX" "FORM-XXX" '[{"action":"add","field":{"type":"TextField","label":"备注"}}]'
+```
 
 ## 使用方式
 

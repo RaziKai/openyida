@@ -1,6 +1,18 @@
 ---
 name: yida-create-page
 description: 宜搭自定义页面创建技能，通过调用 saveFormSchemaInfo 接口快速创建自定义展示页面。
+license: MIT
+compatibility:
+  - opencode
+  - claude-code
+metadata:
+  audience: developers
+  workflow: yida-development
+  version: 1.0.0
+  tags:
+    - yida
+    - low-code
+    - page
 ---
 
 # 宜搭自定义页面创建技能
@@ -8,6 +20,26 @@ description: 宜搭自定义页面创建技能，通过调用 saveFormSchemaInfo
 ## 概述
 
 本技能描述如何通过 HTTP 请求调用宜搭 `saveFormSchemaInfo` 接口创建自定义展示页面（display 类型）。创建后可通过 `yida-publish` 技能部署自定义 JSX 代码。
+
+## 何时使用
+
+当以下场景发生时使用此技能：
+- 用户需要在已有应用中创建自定义展示页面
+- 用户需要创建用于展示内容的主页、列表页等非表单页面
+- 已通过 yida-create-app 创建应用后，需要创建第一个页面
+
+## 使用示例
+
+### 示例 1：基础用法
+**场景**：在已有应用中创建一个自定义页面
+**命令**：
+```bash
+node .claude/skills/yida-create-page/scripts/create-page.js "APP_XXX" "游戏主页"
+```
+**输出**：
+```json
+{"success":true,"pageId":"FORM-XXX","pageName":"游戏主页","appType":"APP_XXX","url":"{base_url}/APP_XXX/workbench/FORM-XXX"}
+```
 
 ## 使用方式
 
