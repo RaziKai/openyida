@@ -1,6 +1,14 @@
 ---
 name: yida-create-app
 description: 宜搭应用创建技能，通过调用 registerApp 接口快速创建宜搭应用，支持自定义应用名称、描述和图标。
+license: MIT
+compatibility:
+  - opencode
+  - claude-code
+metadata:
+  audience: developers
+  workflow: yida-development
+  version: 1.0.0
 ---
 
 # 宜搭应用创建技能
@@ -8,6 +16,33 @@ description: 宜搭应用创建技能，通过调用 registerApp 接口快速创
 ## 概述
 
 本技能描述如何通过 HTTP 请求调用宜搭 `registerApp` 接口创建应用，返回应用 ID（appType）。创建应用是搭建宜搭应用的第一步，后续可在应用下创建表单页面和自定义页面。
+
+## 何时使用
+
+当以下场景发生时使用此技能：
+- 用户需要创建新的宜搭应用
+- 用户想要通过 AI 一句话生成宜搭应用
+- 开始一个新的宜搭项目开发流程
+
+## 使用示例
+
+### 示例 1：基础用法
+**场景**：创建一个简单的宜搭应用
+**命令**：
+```bash
+node .claude/skills/yida-create-app/scripts/create-app.js "考勤管理"
+```
+**输出**：
+```json
+{"success":true,"appType":"APP_XXX","appName":"考勤管理","url":"{base_url}/APP_XXX/admin"}
+```
+
+### 示例 2：完整参数
+**场景**：创建带描述和图标的应用
+**命令**：
+```bash
+node .claude/skills/yida-create-app/scripts/create-app.js "考勤管理" "员工考勤打卡系统" "xian-daka" "#00B853"
+```
 
 ## 使用方式
 
