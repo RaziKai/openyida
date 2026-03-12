@@ -1,0 +1,97 @@
+name: Check Contributors
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  check-contributors:
+    runs-on: ubuntu-latest
+    name: Check README contributors updated
+
+    steps:
+      - name: Checkout code (with history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Check if new contributor is missing from README
+        run: |
+          # 提取 README.md 中 contributors 区域的内容
+          extract_contributors_section() {
+            local ref="$1"
+            git show "${ref}:README.md" 2>/dev/null \
+              | awk '/### 贡献者/{found=1} found && /<p align="left">/{inside=1} inside{print} inside && /<\/p>/{exit}'
+          }
+
+          # 从 contributors 区域提取所有 GitHub 用户名（小写，去重排序）
+          extract_github_users() {
+            echo "$1" | grep -oP 'href="https://github\.com/\K[^"]+' | tr '[:upper:]' '[:lower:]' | sort -u || true
+          }
+
+          PREV_SECTION=$(extract_contributors_section "HEAD~1")
+          CURR_SECTION=$(extract_contributors_section "HEAD")
+
+          PREV_USERS=$(extract_github_users "$PREV_SECTION")
+          CURR_USERS=$(extract_github_users "$CURR_SECTION")
+
+          echo "=== 上一版本贡献者 ==="
+          echo "${PREV_USERS:-（无）}"
+          echo ""
+          echo "=== 当前版本贡献者 ==="
+          echo "${CURR_USERS:-（无）}"
+          echo ""
+
+          # 找出本次 commit 涉及的所有 commit 作者的 GitHub 用户名
+          # push 到 main 时可能包含多个 commit（squash merge / merge commit）
+          # 通过 git log 获取 HEAD~1..HEAD 之间所有 commit 的作者邮箱
+          NEW_COMMIT_AUTHORS=$(git log HEAD~1..HEAD --format='%ae' | sort -u)
+          echo "=== 本次 push 涉及的提交作者邮箱 ==="
+          echo "$NEW_COMMIT_AUTHORS"
+          echo ""
+
+          # 找出本次新增的 GitHub 用户名（对比上一版本）
+          NEW_USERS_IN_README=$(comm -13 <(echo "$PREV_USERS") <(echo "$CURR_USERS"))
+
+          if [ -n "$NEW_USERS_IN_README" ]; then
+            echo "✅ README contributors 已更新，新增贡献者："
+            echo "$NEW_USERS_IN_README"
+            exit 0
+          fi
+
+          # contributors 区域没有变化，检查本次 push 是否引入了新的 commit 作者
+          # 策略：对比 HEAD~1 之前所有 commit 的作者 vs HEAD 所有 commit 的作者
+          ALL_PREV_AUTHORS=$(git log HEAD~1 --format='%ae' | sort -u)
+          ALL_CURR_AUTHORS=$(git log HEAD --format='%ae' | sort -u)
+          BRAND_NEW_AUTHORS=$(comm -13 <(echo "$ALL_PREV_AUTHORS") <(echo "$ALL_CURR_AUTHORS"))
+
+          echo "=== 历史贡献者邮箱（HEAD~1 之前）==="
+          echo "${ALL_PREV_AUTHORS:-（无）}"
+          echo ""
+          echo "=== 全量贡献者邮箱（含本次）==="
+          echo "${ALL_CURR_AUTHORS:-（无）}"
+          echo ""
+
+          if [ -z "$BRAND_NEW_AUTHORS" ]; then
+            echo "✅ 本次 push 没有新贡献者，README contributors 无需更新，检查通过！"
+            exit 0
+          fi
+
+          # 有新贡献者但 README 未更新，CI 失败
+          echo "❌ README contributors 未更新"
+          echo ""
+          echo "检测到以下新贡献者的邮箱首次出现在提交历史中，但其头像未添加到 README.md："
+          echo ""
+          echo "$BRAND_NEW_AUTHORS"
+          echo ""
+          echo "请按以下步骤更新 README.md 中的 '### 贡献者' 部分："
+          echo ""
+          echo "  1. 确认贡献者的 GitHub 用户名（可通过邮箱在 GitHub 搜索）"
+          echo "  2. 在 README.md 的 <p align=\"left\"> 块中添加头像链接："
+          echo ""
+          echo "     <a href=\"https://github.com/<用户名>\"><img src=\"https://avatars.githubusercontent.com/<用户名>?v=4&s=48\" width=\"48\" height=\"48\" alt=\"<昵称>\" title=\"<昵称>\"/></a>"
+          echo ""
+          echo "  3. 提交更新并推送到 main 分支"
+          echo ""
+          echo "如果该贡献者已在列表中（用户名大小写不同等情况），请检查 README 中的拼写是否与 GitHub 用户名一致。"
+          exit 1
