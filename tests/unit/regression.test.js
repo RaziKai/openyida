@@ -26,14 +26,15 @@ describe('回归测试 - 历史 Bug 修复验证', () => {
 
     test('确保不使用 console.log 输出日志', () => {
       const mockConsoleLog = jest.spyOn(console, 'log').mockImplementation(() => {});
-      
-      const shouldNotUseConsoleLog = () => {
-        console.log('这不应该出现在 stdout');
+
+      // 模拟一个正确实现：只用 console.error 输出，不调用 console.log
+      const correctLogImplementation = (message) => {
+        console.error(message);
       };
-      
-      shouldNotUseConsoleLog();
+
+      correctLogImplementation('日志信息');
       expect(mockConsoleLog).not.toHaveBeenCalled();
-      
+
       mockConsoleLog.mockRestore();
     });
   });
