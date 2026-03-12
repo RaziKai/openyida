@@ -77,6 +77,7 @@ cd .claude/skills/yida-publish-page/scripts && npm install
 | `yida-get-schema` | `node .claude/skills/get-schema/scripts/get-schema.js <appType> <formUuid>` | 获取表单 Schema，确认字段 ID |
 | `yida-custom-page` | 详见 `.claude/skills/yida-custom-page/SKILL.md` | 编写自定义页面 JSX 代码（React 16 规范、状态管理、27 个 API） |
 | `yida-publish-page` | `node .claude/skills/yida-publish-page/scripts/publish.js <appType> <formUuid> <源文件路径>` | 编译并发布自定义页面 |
+| `yida-seed-data` | `python3 .claude/skills/yida-seed-data/scripts/seed-data.py --app-type <appType> --page-url "<URL>" --records '<JSON>'` | 向表单批量写入测试数据 |
 
 ---
 
@@ -144,6 +145,39 @@ cd .claude/skills/yida-publish-page/scripts && npm install
 | 表单详情页（编辑模式） | `{base_url}/{appType}/formDetail/{formUuid}?formInstId={formInstId}&mode=edit` |
 
 > 所有地址拼接 `&corpid={corpId}` 可自动切换到对应组织。
+
+---
+
+## 测试数据写入
+
+> ⚠️ **重要约束**：宜搭表单数据**不能**通过 Node.js 直接发送 HTTP 请求写入。`/alibaba/web/` 路径返回 302 重定向，`/dingtalk/web/` 路径返回 404。**必须**使用 `yida-seed-data` 技能，通过 Playwright 在已登录的浏览器上下文中写入。
+
+### 写入步骤
+
+**1. 从 `.cache/<项目名>-schema.json` 获取 `formUuid` 和 `fieldId`**
+
+**2. 构造 records JSON 并执行写入**：
+
+```bash
+python3 .claude/skills/yida-seed-data/scripts/seed-data.py \
+  --app-type APP_XXX \
+  --page-url "https://www.aliwork.com/APP_XXX/custom/FORM-YYY" \
+  --records '[
+    {
+      "formUuid": "FORM-AAA",
+      "label": "商品A",
+      "data": {
+        "node_xxx1": "商品A",
+        "node_xxx2": 99.9,
+        "node_xxx3": "分类A"
+      }
+    }
+  ]'
+```
+
+- `--page-url`：填写已发布的任意一个自定义页面 URL（用于建立登录态上下文）
+- `--records`：JSON 数组，每条记录包含 `formUuid`、`data`（必填）和 `label`（可选，用于日志）
+- 脚本会自动读取 `.cache/cookies.json` 登录态，若失效则自动触发扫码重登录
 
 ---
 
